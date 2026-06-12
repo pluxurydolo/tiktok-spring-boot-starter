@@ -1,0 +1,156 @@
+{
+  "properties": [
+    {
+      "name": "tiktok.auth.client.key",
+      "type": "java.lang.String",
+      "description": "TikTok Client Key.",
+      "sourceType": "com.pluxurydolo.tiktok.properties.TikTokAuthProperties"
+    },
+    {
+      "name": "tiktok.auth.client.secret",
+      "type": "java.lang.String",
+      "description": "TikTok Client Secret.",
+      "sourceType": "com.pluxurydolo.tiktok.properties.TikTokAuthProperties"
+    },
+    {
+      "name": "tiktok.auth.redirect-uri",
+      "type": "java.lang.String",
+      "description": "URI редиректа после логина.",
+      "sourceType": "com.pluxurydolo.tiktok.properties.TikTokAuthProperties"
+    },
+    {
+      "name": "tiktok.endpoint.login",
+      "type": "java.lang.String",
+      "description": "Эндпоинт логина.",
+      "sourceType": "com.pluxurydolo.tiktok.controller.TikTokOAuthController"
+    },
+    {
+      "name": "tiktok.endpoint.redirect",
+      "type": "java.lang.String",
+      "description": "Эндпоинт редиректа после логина.",
+      "sourceType": "com.pluxurydolo.tiktok.controller.TikTokOAuthController"
+    },
+    {
+      "name": "tiktok.endpoint.refresh-token",
+      "type": "java.lang.String",
+      "description": "Эндпоинт для обновления токена.",
+      "sourceType": "com.pluxurydolo.tiktok.controller.TikTokOAuthController"
+    },
+    {
+      "name": "tiktok.scheduler.refresh-token.cron",
+      "type": "java.lang.String",
+      "description": "Cron обновления токена."
+    },
+    {
+      "name": "tiktok.scheduler.refresh-token.zone",
+      "type": "java.lang.String",
+      "description": "Временная зона выполнения cron по обновлению токена."
+    }
+  ],
+  "hints": [
+    {
+      "name": "tiktok.auth.client.key",
+      "values": [
+        {
+          "value": "${TIKTOK_CLIENT_KEY}"
+        }
+      ],
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    },
+    {
+      "name": "tiktok.auth.client.secret",
+      "values": [
+        {
+          "value": "${TIKTOK_CLIENT_SECRET}"
+        }
+      ],
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    },
+    {
+      "name": "tiktok.auth.redirect-uri",
+      "values": [
+        {
+          "value": "http://localhost:8888${tiktok.redirect.url}"
+        }
+      ],
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    },
+    {
+      "name": "tiktok.endpoint.login",
+      "values": [
+        {
+          "value": "/${spring.application.name}/v1/tiktok/login"
+        }
+      ],
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    },
+    {
+      "name": "tiktok.endpoint.redirect",
+      "values": [
+        {
+          "value": "/${spring.application.name}/v1/tiktok/login/redirect"
+        }
+      ],
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    },
+    {
+      "name": "tiktok.endpoint.refresh-token",
+      "values": [
+        {
+          "value": "/${spring.application.name}/v1/tiktok/token/refresh"
+        }
+      ],
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    },
+    {
+      "name": "tiktok.scheduler.refresh-token.cron",
+      "values": [
+        {
+          "value": "0 0 0 * * SUN"
+        }
+      ],
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    },
+    {
+      "name": "tiktok.scheduler.refresh-token.zone",
+      "values": [
+        {
+          "value": "Europe/Moscow"
+        }
+      ],
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    }
+  ]
+}
