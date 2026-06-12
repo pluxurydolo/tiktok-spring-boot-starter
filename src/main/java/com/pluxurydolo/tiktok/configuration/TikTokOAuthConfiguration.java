@@ -1,9 +1,12 @@
 package com.pluxurydolo.tiktok.configuration;
 
+import com.pluxurydolo.tiktok.flow.oauth.TikTokAccessTokenFlow;
 import com.pluxurydolo.tiktok.flow.oauth.TikTokAuthorizationCodeFlow;
-import com.pluxurydolo.tiktok.flow.oauth.TikTokExchangeTokenFlow;
 import com.pluxurydolo.tiktok.flow.oauth.TikTokRefreshTokenFlow;
+import com.pluxurydolo.tiktok.flow.oauth.hook.AccessTokenFlowHook;
+import com.pluxurydolo.tiktok.flow.oauth.hook.RefreshTokenFlowHook;
 import com.pluxurydolo.tiktok.properties.TikTokAuthProperties;
+import com.pluxurydolo.tiktok.token.AbstractTokenRetriever;
 import com.pluxurydolo.tiktok.token.AbstractTokenSaver;
 import com.pluxurydolo.tiktok.util.TikTokPkceUtil;
 import com.pluxurydolo.tiktok.web.TikTokApiHttpClient;
@@ -25,11 +28,18 @@ public class TikTokOAuthConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public TikTokExchangeTokenFlow tikTokExchangeTokenFlow(
+    public TikTokAccessTokenFlow tikTokAccessTokenFlow(
         TikTokApiHttpClient tikTokApiHttpClient,
-        TikTokAuthProperties tikTokAuthProperties
+        TikTokAuthProperties tikTokAuthProperties,
+        AbstractTokenSaver abstractTokenSaver,
+        AccessTokenFlowHook accessTokenFlowHook
     ) {
-        return new TikTokExchangeTokenFlow(tikTokApiHttpClient, tikTokAuthProperties);
+        return new TikTokAccessTokenFlow(
+            tikTokApiHttpClient,
+            tikTokAuthProperties,
+            abstractTokenSaver,
+            accessTokenFlowHook
+        );
     }
 
     @Bean
@@ -37,9 +47,17 @@ public class TikTokOAuthConfiguration {
     public TikTokRefreshTokenFlow tikTokRefreshTokenFlow(
         TikTokAuthProperties tikTokAuthProperties,
         TikTokApiHttpClient tikTokApiHttpClient,
-        AbstractTokenSaver abstractTokenSaver
+        AbstractTokenRetriever abstractTokenRetriever,
+        AbstractTokenSaver abstractTokenSaver,
+        RefreshTokenFlowHook refreshTokenFlowHook
     ) {
-        return new TikTokRefreshTokenFlow(tikTokAuthProperties, tikTokApiHttpClient, abstractTokenSaver);
+        return new TikTokRefreshTokenFlow(
+            tikTokAuthProperties,
+            tikTokApiHttpClient,
+            abstractTokenRetriever,
+            abstractTokenSaver,
+            refreshTokenFlowHook
+        );
     }
 
     @Bean

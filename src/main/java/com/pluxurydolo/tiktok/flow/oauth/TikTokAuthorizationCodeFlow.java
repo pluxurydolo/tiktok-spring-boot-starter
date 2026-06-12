@@ -2,6 +2,8 @@ package com.pluxurydolo.tiktok.flow.oauth;
 
 import com.pluxurydolo.tiktok.properties.TikTokAuthProperties;
 import com.pluxurydolo.tiktok.util.TikTokPkceUtil;
+import org.springframework.http.server.reactive.ServerHttpResponse;
+import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
@@ -9,6 +11,7 @@ import java.util.Base64;
 
 import static java.nio.charset.Charset.defaultCharset;
 import static java.util.UUID.randomUUID;
+import static org.springframework.http.HttpStatus.FOUND;
 
 public class TikTokAuthorizationCodeFlow {
     private final TikTokPkceUtil tikTokPkceUtil;
@@ -19,7 +22,17 @@ public class TikTokAuthorizationCodeFlow {
         this.tikTokAuthProperties = tikTokAuthProperties;
     }
 
-    public URI getAuthorizationUri() {
+    public ServerHttpResponse getResponse(ServerWebExchange serverWebExchange) {
+        URI authorizationUri = getAuthorizationUri();
+
+        ServerHttpResponse response = serverWebExchange.getResponse();
+        response.setStatusCode(FOUND);
+        response.getHeaders().setLocation(authorizationUri);
+
+        return response;
+    }
+
+    private URI getAuthorizationUri() {
         String clientKey = tikTokAuthProperties.clientKey();
         String redirectUri = tikTokAuthProperties.redirectUri();
 

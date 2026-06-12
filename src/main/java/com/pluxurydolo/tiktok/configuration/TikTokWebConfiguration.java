@@ -1,12 +1,10 @@
 package com.pluxurydolo.tiktok.configuration;
 
 import com.pluxurydolo.tiktok.controller.TikTokOAuthController;
+import com.pluxurydolo.tiktok.flow.oauth.TikTokAccessTokenFlow;
 import com.pluxurydolo.tiktok.flow.oauth.TikTokAuthorizationCodeFlow;
-import com.pluxurydolo.tiktok.flow.oauth.TikTokExchangeTokenFlow;
 import com.pluxurydolo.tiktok.flow.oauth.TikTokRefreshTokenFlow;
 import com.pluxurydolo.tiktok.service.TikTokOAuthService;
-import com.pluxurydolo.tiktok.token.AbstractTokenRetriever;
-import com.pluxurydolo.tiktok.token.AbstractTokenSaver;
 import com.pluxurydolo.tiktok.web.TikTokApiHttpClient;
 import com.pluxurydolo.tiktok.web.TikTokUploadHttpClient;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -32,18 +30,10 @@ public class TikTokWebConfiguration {
     @ConditionalOnMissingBean
     public TikTokOAuthService tikTokOAuthService(
         TikTokAuthorizationCodeFlow tikTokAuthorizationCodeFlow,
-        TikTokExchangeTokenFlow tikTokExchangeTokenFlow,
-        TikTokRefreshTokenFlow tikTokRefreshTokenFlow,
-        AbstractTokenSaver abstractTokenSaver,
-        AbstractTokenRetriever abstractTokenRetriever
+        TikTokAccessTokenFlow tikTokAccessTokenFlow,
+        TikTokRefreshTokenFlow tikTokRefreshTokenFlow
     ) {
-        return new TikTokOAuthService(
-            tikTokAuthorizationCodeFlow,
-            tikTokExchangeTokenFlow,
-            tikTokRefreshTokenFlow,
-            abstractTokenSaver,
-            abstractTokenRetriever
-        );
+        return new TikTokOAuthService(tikTokAuthorizationCodeFlow, tikTokAccessTokenFlow, tikTokRefreshTokenFlow);
     }
 
     @Bean
