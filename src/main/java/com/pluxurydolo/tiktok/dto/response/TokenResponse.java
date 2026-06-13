@@ -8,13 +8,13 @@ public record TokenResponse(
     String accessToken,
 
     @JsonProperty("expires_in")
-    int expiresIn,
+    Integer expiresIn,
 
     @JsonProperty("refresh_token")
     String refreshToken,
 
     @JsonProperty("refresh_expires_in")
-    int refreshExpiresIn,
+    Integer refreshExpiresIn,
 
     @JsonProperty("open_id")
     String openId,
