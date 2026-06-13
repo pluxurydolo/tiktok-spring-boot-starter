@@ -32,7 +32,7 @@ public class TikTokAuthorizationCodeFlow {
         String redirectUri = tikTokAuthProperties.redirectUri();
         String state = randomUUID().toString();
 
-        return UriComponentsBuilder.fromUriString("https://www.tiktokapis.com/v2/auth/authorize/")
+        return UriComponentsBuilder.fromUriString("https://www.tiktok.com/v2/auth/authorize/")
             .queryParam("client_key", clientKey)
             .queryParam("response_type", "code")
             .queryParam("scope", "user.info.basic,video.upload,video.publish")
