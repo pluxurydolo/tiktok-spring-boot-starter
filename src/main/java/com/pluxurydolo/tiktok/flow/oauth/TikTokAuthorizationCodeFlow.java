@@ -2,6 +2,8 @@ package com.pluxurydolo.tiktok.flow.oauth;
 
 import com.pluxurydolo.tiktok.properties.TikTokAuthProperties;
 import com.pluxurydolo.tiktok.util.TikTokPkceUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -14,6 +16,8 @@ import static java.util.UUID.randomUUID;
 import static org.springframework.http.HttpStatus.FOUND;
 
 public class TikTokAuthorizationCodeFlow {
+    private static final Logger LOGGER = LoggerFactory.getLogger(TikTokAuthorizationCodeFlow.class);
+
     private final TikTokPkceUtil tikTokPkceUtil;
     private final TikTokAuthProperties tikTokAuthProperties;
 
@@ -42,6 +46,8 @@ public class TikTokAuthorizationCodeFlow {
         String statePayload = String.format("%s:%s", randomUUID(), codeVerifier);
         byte[] statePayloadBytes = statePayload.getBytes(UTF_8);
         String state = HexFormat.of().formatHex(statePayloadBytes);
+
+        LOGGER.info("dddd [tiktok-starter] {} ({})", state, state.length()); // TODO убрать
 
         return UriComponentsBuilder.fromUriString("https://www.tiktok.com/v2/auth/authorize/")
             .queryParam("client_key", clientKey)

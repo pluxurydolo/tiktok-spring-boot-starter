@@ -44,6 +44,8 @@ public class TikTokAccessTokenFlow {
         String decodedState = new String(stateBytes, UTF_8);
         String codeVerifier = decodedState.split(":")[1];
 
+        LOGGER.info("cccc [tiktok-starter] State: {} ({}) \nCodeVerifier: {}", state, state.length(), codeVerifier); // TODO убрать
+
         return tikTokApiHttpClient.getToken(clientKey, clientSecret, code, grantType, redirectUri, codeVerifier)
             .flatMap(abstractTokenSaver::save)
             .flatMap(_ -> accessTokenFlowHook.doAfter())
