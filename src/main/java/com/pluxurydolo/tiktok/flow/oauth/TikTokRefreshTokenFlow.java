@@ -8,6 +8,8 @@ import com.pluxurydolo.tiktok.token.AbstractTokenSaver;
 import com.pluxurydolo.tiktok.web.TikTokApiHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
@@ -53,7 +55,19 @@ public class TikTokRefreshTokenFlow {
         String grantType = "refresh_token";
         String refreshToken = tikTokTokens.refreshToken();
 
-        return tikTokApiHttpClient.refreshToken(clientKey, clientSecret, grantType, refreshToken)
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        body.add("client_key", clientKey);
+        body.add("client_secret", clientSecret);
+        body.add("grant_type", grantType);
+        body.add("refresh_token", refreshToken);
+
+        return tikTokApiHttpClient.refreshToken(body)
+            .doOnNext(response -> {
+                LOGGER.info("ccaa [tiktok-starter] Ответ TikTok:");
+                LOGGER.info("ccbb [tiktok-starter] access_token: {}", response.accessToken() != null ? "ЕСТЬ" : "null");
+                LOGGER.info("ccca [tiktok-starter] error: {}", response.error());
+                LOGGER.info("ccdd [tiktok-starter] error_description: {}", response.errorDescription());
+            })
             .flatMap(abstractTokenSaver::save);
     }
 }

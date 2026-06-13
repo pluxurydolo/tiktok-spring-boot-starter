@@ -12,7 +12,9 @@ import org.springframework.web.service.annotation.HttpExchange;
 import org.springframework.web.service.annotation.PostExchange;
 import reactor.core.publisher.Mono;
 
-@HttpExchange("https://open-api.tiktok.com")
+import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM_VALUE;
+
+@HttpExchange("https://open.tiktokapis.com")
 public interface TikTokUploadHttpClient {
 
     @PostExchange("/v2/video/upload/init/")
@@ -23,7 +25,7 @@ public interface TikTokUploadHttpClient {
 
     @PostExchange(
         value = "/v2/video/upload/",
-        contentType = "application/octet-stream"
+        contentType = APPLICATION_OCTET_STREAM_VALUE
     )
     Mono<VideoUploadResponse> uploadVideo(
         @RequestParam("upload_token") String uploadToken,
