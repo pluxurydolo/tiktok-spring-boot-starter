@@ -10,6 +10,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.util.HexFormat;
+import java.util.stream.Collectors;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -40,11 +41,15 @@ public class TikTokAccessTokenFlow {
         String grantType = "authorization_code";
         String redirectUri = tikTokAuthProperties.redirectUri();
 
-        byte[] stateBytes = HexFormat.of().parseHex(state);
+        String cleanState = state.trim();
+        byte[] stateBytes = HexFormat.of().parseHex(cleanState);
         String decodedState = new String(stateBytes, UTF_8);
         String codeVerifier = decodedState.split(":")[1];
 
-        LOGGER.info("cccc [tiktok-starter] State: {} ({}) \nCodeVerifier: {}", state, state.length(), codeVerifier); // TODO убрать
+        LOGGER.info("cccc [tiktok-starter] State bytes: {}",
+            state.chars()
+                .mapToObj(c -> String.format("%02x", c))
+                .collect(Collectors.joining(" "))); // TODO удалить
 
         return tikTokApiHttpClient.getToken(clientKey, clientSecret, code, grantType, redirectUri, codeVerifier)
             .flatMap(abstractTokenSaver::save)
