@@ -9,7 +9,10 @@ import reactor.core.publisher.Mono;
 @HttpExchange("https://open-api.tiktok.com")
 public interface TikTokApiHttpClient {
 
-    @PostExchange("/v2/oauth/token/")
+    @PostExchange(
+        value = "/v2/oauth/token/",
+        contentType = "application/x-www-form-urlencoded"
+    )
     Mono<TokenResponse> getToken(
         @RequestParam("client_key") String clientKey,
         @RequestParam("client_secret") String clientSecret,
