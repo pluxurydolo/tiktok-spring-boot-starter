@@ -11,7 +11,6 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.util.HexFormat;
-import java.util.stream.Collectors;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -47,12 +46,13 @@ public class TikTokAccessTokenFlow {
         String decodedState = new String(stateBytes, UTF_8);
         String codeVerifier = decodedState.split(":")[1];
 
-        LOGGER.info("cccc [tiktok-starter] State bytes: {}",
-            state.chars()
-                .mapToObj(c -> String.format("%02x", c))
-                .collect(Collectors.joining(" "))); // TODO удалить
-
         return tikTokApiHttpClient.getToken(clientKey, clientSecret, code, grantType, redirectUri, codeVerifier)
+            .doOnNext(response -> {
+                LOGGER.info("ccaa [tiktok-starter] Ответ TikTok:");
+                LOGGER.info("ccbb [tiktok-starter] access_token: {}", response.accessToken() != null ? "ЕСТЬ" : "null");
+                LOGGER.info("ccca [tiktok-starter] error: {}", response.error());
+                LOGGER.info("ccdd [tiktok-starter] error_description: {}", response.errorDescription());
+            })
             .flatMap(abstractTokenSaver::save)
             .flatMap(_ -> accessTokenFlowHook.doAfter())
             .doOnSuccess(_ -> LOGGER.info("bpvh [tiktok-starter] Access token успешно получен"))
