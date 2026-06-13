@@ -6,6 +6,7 @@ import com.pluxurydolo.tiktok.token.AbstractTokenSaver;
 import com.pluxurydolo.tiktok.web.TikTokApiHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
@@ -56,7 +57,16 @@ public class TikTokAccessTokenFlow {
             .flatMap(_ -> accessTokenFlowHook.doAfter())
             .doOnSuccess(_ -> LOGGER.info("bpvh [tiktok-starter] Access token успешно получен"))
             .onErrorResume(throwable -> {
-                LOGGER.error("gvxk [tiktok-starter] Произошла ошибка при получении access token");
+                LOGGER.error("gvxk [tiktok-starter] Тип ошибки: {}", throwable.getClass().getName());
+                LOGGER.error("ssxr [tiktok-starter] Сообщение: {}", throwable.getMessage());
+
+                if (throwable instanceof WebClientResponseException exception) {
+                    LOGGER.error("xdcx [tiktok-starter] HTTP статус: {}", exception.getStatusCode());
+                    LOGGER.error("iopu [tiktok-starter] Тело ответа: {}", exception.getResponseBodyAsString());
+                } else {
+                    LOGGER.error("urew [tiktok-starter] Полный стек:", throwable);
+                }
+
                 return accessTokenFlowHook.handleException(throwable);
             })
             .subscribeOn(Schedulers.boundedElastic());
