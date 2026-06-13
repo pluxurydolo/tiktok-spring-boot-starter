@@ -47,7 +47,7 @@ public class TikTokAuthorizationCodeFlow {
         byte[] statePayloadBytes = statePayload.getBytes(UTF_8);
         String state = HexFormat.of().formatHex(statePayloadBytes);
 
-        LOGGER.info("dddd [tiktok-starter] {} ({})", state, state.length()); // TODO убрать
+        LOGGER.info("abcd [tiktok-starter] CODE_VERIFIER={}", codeVerifier);
 
         return UriComponentsBuilder.fromUriString("https://www.tiktok.com/v2/auth/authorize/")
             .queryParam("client_key", clientKey)
