@@ -9,9 +9,9 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-import java.util.Base64;
+import java.util.HexFormat;
 
-import static java.nio.charset.Charset.defaultCharset;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class TikTokAccessTokenFlow {
     private static final Logger LOGGER = LoggerFactory.getLogger(TikTokAccessTokenFlow.class);
@@ -40,8 +40,8 @@ public class TikTokAccessTokenFlow {
         String grantType = "authorization_code";
         String redirectUri = tikTokAuthProperties.redirectUri();
 
-        byte[] stateBytes = Base64.getUrlDecoder().decode(state);
-        String decodedState = new String(stateBytes, defaultCharset());
+        byte[] stateBytes = HexFormat.of().parseHex(state);
+        String decodedState = new String(stateBytes, UTF_8);
         String codeVerifier = decodedState.split(":")[1];
 
         return tikTokApiHttpClient.getToken(clientKey, clientSecret, code, grantType, redirectUri, codeVerifier)
