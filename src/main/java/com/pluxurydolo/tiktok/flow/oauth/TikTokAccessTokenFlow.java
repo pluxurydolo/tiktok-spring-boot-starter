@@ -6,6 +6,8 @@ import com.pluxurydolo.tiktok.token.AbstractTokenSaver;
 import com.pluxurydolo.tiktok.web.TikTokApiHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -36,14 +38,18 @@ public class TikTokAccessTokenFlow {
         String grantType = "authorization_code";
         String redirectUri = tikTokAuthProperties.redirectUri();
 
-        LOGGER.info("aaab [tiktok-starter] Запрос к TikTok:");
-        LOGGER.info("aaac [tiktok-starter] client_key={}", clientKey);
-        LOGGER.info("aaad [tiktok-starter] redirect_uri={}", redirectUri);
-        LOGGER.info("aaae [tiktok-starter] grant_type={}", grantType);
-        LOGGER.info("aaaf [tiktok-starter] code длина={}", code != null ? code.length() : 0);
-        LOGGER.info("aaag [tiktok-starter] code первые 20={}", code != null ? code.substring(0, Math.min(20, code.length())) : "null");
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        body.add("client_key", clientKey);
+        body.add("client_secret", clientSecret);
+        body.add("code", code);
+        body.add("grant_type", grantType);
+        body.add("redirect_uri", redirectUri);
 
-        return tikTokApiHttpClient.getToken(clientKey, clientSecret, code, grantType, redirectUri)
+        LOGGER.info("uyrw [tiktok-starter] Sending request to: https://open.tiktokapis.com/v2/oauth/token/");
+        LOGGER.info("ybpk [tiktok-starter] Parameters: client_key={}, redirect_uri={}, grant_type={}, code_length={}",
+            clientKey, redirectUri, grantType, code.length());
+
+        return tikTokApiHttpClient.getToken(body)
             .doOnNext(response -> {
                 LOGGER.info("ccaa [tiktok-starter] Ответ TikTok:");
                 LOGGER.info("ccbb [tiktok-starter] access_token: {}", response.accessToken() != null ? "ЕСТЬ" : "null");
