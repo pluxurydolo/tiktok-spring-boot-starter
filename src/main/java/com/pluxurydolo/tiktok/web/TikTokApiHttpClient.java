@@ -11,18 +11,20 @@ public interface TikTokApiHttpClient {
 
     @PostExchange(
         value = "/v2/oauth/token/",
-        contentType = "application/x-www-form-urlencoded"
+        contentType = "application/x-www-form-urlencoded; charset=UTF-8"
     )
     Mono<TokenResponse> getToken(
         @RequestParam("client_key") String clientKey,
         @RequestParam("client_secret") String clientSecret,
         @RequestParam("code") String code,
         @RequestParam("grant_type") String grantType,
-        @RequestParam("redirect_uri") String redirectUri,
-        @RequestParam("code_verifier") String codeVerifier
+        @RequestParam("redirect_uri") String redirectUri
     );
 
-    @PostExchange("/v2/oauth/token/")
+    @PostExchange(
+        value = "/v2/oauth/token/",
+        contentType = "application/x-www-form-urlencoded; charset=UTF-8"
+    )
     Mono<TokenResponse> refreshToken(
         @RequestParam("client_key") String clientKey,
         @RequestParam("client_secret") String clientSecret,

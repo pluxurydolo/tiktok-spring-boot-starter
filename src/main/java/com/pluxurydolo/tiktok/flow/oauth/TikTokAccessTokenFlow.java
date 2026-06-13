@@ -10,10 +10,6 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-import java.util.HexFormat;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
-
 public class TikTokAccessTokenFlow {
     private static final Logger LOGGER = LoggerFactory.getLogger(TikTokAccessTokenFlow.class);
 
@@ -34,19 +30,14 @@ public class TikTokAccessTokenFlow {
         this.accessTokenFlowHook = accessTokenFlowHook;
     }
 
-    public Mono<String> getAccessToken(String code, String state) {
+    public Mono<String> getAccessToken(String code) {
         String clientKey = tikTokAuthProperties.clientKey();
         String clientSecret = tikTokAuthProperties.clientSecret();
 
         String grantType = "authorization_code";
         String redirectUri = tikTokAuthProperties.redirectUri();
 
-        String cleanState = state.trim();
-        byte[] stateBytes = HexFormat.of().parseHex(cleanState);
-        String decodedState = new String(stateBytes, UTF_8);
-        String codeVerifier = decodedState.split(":")[1];
-
-        return tikTokApiHttpClient.getToken(clientKey, clientSecret, code, grantType, redirectUri, codeVerifier)
+        return tikTokApiHttpClient.getToken(clientKey, clientSecret, code, grantType, redirectUri)
             .doOnNext(response -> {
                 LOGGER.info("ccaa [tiktok-starter] Ответ TikTok:");
                 LOGGER.info("ccbb [tiktok-starter] access_token: {}", response.accessToken() != null ? "ЕСТЬ" : "null");

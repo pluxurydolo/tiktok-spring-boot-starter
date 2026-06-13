@@ -27,8 +27,8 @@ public class TikTokOAuthService {
         return response.setComplete();
     }
 
-    public Mono<String> redirect(String code, String state) {
-        return tikTokAccessTokenFlow.getAccessToken(code, state);
+    public Mono<String> redirect(String code) {
+        return tikTokAccessTokenFlow.getAccessToken(code);
     }
 
     public Mono<String> refreshToken() {

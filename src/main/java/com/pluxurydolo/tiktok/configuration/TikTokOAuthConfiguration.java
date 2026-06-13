@@ -8,7 +8,6 @@ import com.pluxurydolo.tiktok.flow.oauth.hook.RefreshTokenFlowHook;
 import com.pluxurydolo.tiktok.properties.TikTokAuthProperties;
 import com.pluxurydolo.tiktok.token.AbstractTokenRetriever;
 import com.pluxurydolo.tiktok.token.AbstractTokenSaver;
-import com.pluxurydolo.tiktok.util.TikTokPkceUtil;
 import com.pluxurydolo.tiktok.web.TikTokApiHttpClient;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -19,11 +18,8 @@ public class TikTokOAuthConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public TikTokAuthorizationCodeFlow tikTokAuthorizationCodeFlow(
-        TikTokPkceUtil tikTokPkceUtil,
-        TikTokAuthProperties tikTokAuthProperties
-    ) {
-        return new TikTokAuthorizationCodeFlow(tikTokPkceUtil, tikTokAuthProperties);
+    public TikTokAuthorizationCodeFlow tikTokAuthorizationCodeFlow(TikTokAuthProperties tikTokAuthProperties) {
+        return new TikTokAuthorizationCodeFlow(tikTokAuthProperties);
     }
 
     @Bean
@@ -58,11 +54,5 @@ public class TikTokOAuthConfiguration {
             abstractTokenSaver,
             refreshTokenFlowHook
         );
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public TikTokPkceUtil tikTokPkceUtil() {
-        return new TikTokPkceUtil();
     }
 }

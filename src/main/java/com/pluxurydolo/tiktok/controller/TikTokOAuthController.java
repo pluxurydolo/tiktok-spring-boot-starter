@@ -27,10 +27,9 @@ public class TikTokOAuthController {
     @GetMapping("${tiktok.endpoint.redirect}")
     @ConcurrencyLimit(limit = 1, policy = REJECT)
     public Mono<String> redirect(
-        @RequestParam("code") String code,
-        @RequestParam("state") String state
+        @RequestParam("code") String code
     ) {
-        return tikTokOAuthService.redirect(code, state);
+        return tikTokOAuthService.redirect(code);
     }
 
     @GetMapping("${tiktok.endpoint.refresh-token}")
