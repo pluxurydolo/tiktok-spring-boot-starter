@@ -33,9 +33,15 @@ public class TikTokAccessTokenFlow {
     public Mono<String> getAccessToken(String code) {
         String clientKey = tikTokAuthProperties.clientKey();
         String clientSecret = tikTokAuthProperties.clientSecret();
-
         String grantType = "authorization_code";
         String redirectUri = tikTokAuthProperties.redirectUri();
+
+        LOGGER.info("aaab [tiktok-starter] Запрос к TikTok:");
+        LOGGER.info("aaac [tiktok-starter] client_key={}", clientKey);
+        LOGGER.info("aaad [tiktok-starter] redirect_uri={}", redirectUri);
+        LOGGER.info("aaae [tiktok-starter] grant_type={}", grantType);
+        LOGGER.info("aaaf [tiktok-starter] code длина={}", code != null ? code.length() : 0);
+        LOGGER.info("aaag [tiktok-starter] code первые 20={}", code != null ? code.substring(0, Math.min(20, code.length())) : "null");
 
         return tikTokApiHttpClient.getToken(clientKey, clientSecret, code, grantType, redirectUri)
             .doOnNext(response -> {
