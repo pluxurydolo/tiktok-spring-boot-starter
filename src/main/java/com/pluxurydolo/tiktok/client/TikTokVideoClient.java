@@ -1,7 +1,7 @@
 package com.pluxurydolo.tiktok.client;
 
 import com.pluxurydolo.tiktok.dto.request.PublishVideoRequest;
-import com.pluxurydolo.tiktok.exception.TikTokPublicationException;
+import com.pluxurydolo.tiktok.exception.TikTokVideoPublicationException;
 import com.pluxurydolo.tiktok.flow.upload.TikTokVideoPublisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +22,7 @@ public class TikTokVideoClient {
             .doOnSuccess(_ -> LOGGER.info("dizf [tiktok-starter] Видео успешно опубликовано"))
             .onErrorResume(throwable -> {
                 LOGGER.info("oiqk [tiktok-starter] Произошла ошибка при публикации видео");
-                return Mono.error(new TikTokPublicationException(throwable));
+                return Mono.error(new TikTokVideoPublicationException(throwable));
             })
             .subscribeOn(Schedulers.boundedElastic());
     }

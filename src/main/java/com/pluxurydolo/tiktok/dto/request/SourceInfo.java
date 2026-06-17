@@ -8,6 +8,12 @@ public record SourceInfo(
     String source,
 
     @JsonProperty("video_size")
-    long videoSize
+    long videoSize,
+
+    @JsonProperty("chunk_size")
+    long chunkSize,
+
+    @JsonProperty("total_chunk_count")
+    int totalChunkCount
 ) {
 }

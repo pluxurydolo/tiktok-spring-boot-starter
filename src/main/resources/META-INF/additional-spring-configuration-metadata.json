@@ -31,6 +31,18 @@
       "sourceType": "com.pluxurydolo.tiktok.controller.TikTokOAuthController"
     },
     {
+      "name": "tiktok.polling.max-repeat",
+      "type": "java.lang.Integer",
+      "description": "Максимальное число попыток поллинга.",
+      "sourceType": "com.pluxurydolo.tiktok.properties.TikTokPollingProperties"
+    },
+    {
+      "name": "tiktok.polling.delay",
+      "type": "java.time.Duration",
+      "description": "Интервал поллинга.",
+      "sourceType": "com.pluxurydolo.tiktok.properties.TikTokPollingProperties"
+    },
+    {
       "name": "tiktok.endpoint.refresh-token",
       "type": "java.lang.String",
       "description": "Эндпоинт для обновления токена.",
@@ -118,6 +130,32 @@
       "values": [
         {
           "value": "/${spring.application.name}/v1/tiktok/token/refresh"
+        }
+      ],
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    },
+    {
+      "name": "tiktok.polling.max-repeat",
+      "values": [
+        {
+          "value": "20"
+        }
+      ],
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    },
+    {
+      "name": "tiktok.polling.delay",
+      "values": [
+        {
+          "value": "10s"
         }
       ],
       "providers": [

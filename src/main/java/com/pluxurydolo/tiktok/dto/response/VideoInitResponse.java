@@ -12,5 +12,4 @@ public record VideoInitResponse(
     @JsonProperty("error")
     Error error
 ) {
-    public boolean isSuccess() { return data != null && data.uploadUrl() != null; } // TODO удалить
 }

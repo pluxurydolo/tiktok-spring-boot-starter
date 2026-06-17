@@ -3,9 +3,10 @@ package com.pluxurydolo.tiktok.configuration;
 import com.pluxurydolo.tiktok.flow.upload.TikTokUploadInitializer;
 import com.pluxurydolo.tiktok.flow.upload.TikTokUploadStatusPoller;
 import com.pluxurydolo.tiktok.flow.upload.TikTokVideoPublisher;
-import com.pluxurydolo.tiktok.flow.upload.TikTokVideoUploader;
+import com.pluxurydolo.tiktok.properties.TikTokPollingProperties;
 import com.pluxurydolo.tiktok.token.AbstractTokenRetriever;
 import com.pluxurydolo.tiktok.web.TikTokUploadHttpClient;
+import com.pluxurydolo.tiktok.web.TikTokVideoUploader;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,13 +38,16 @@ public class TikTokUploadConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public TikTokVideoUploader tikTokVideoUploader(TikTokUploadHttpClient tikTokUploadHttpClient) {
-        return new TikTokVideoUploader(tikTokUploadHttpClient);
+    public TikTokVideoUploader tikTokVideoUploader() {
+        return new TikTokVideoUploader();
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public TikTokUploadStatusPoller tikTokUploadStatusPoller(TikTokUploadHttpClient tikTokUploadHttpClient) {
-        return new TikTokUploadStatusPoller(tikTokUploadHttpClient);
+    public TikTokUploadStatusPoller tikTokUploadStatusPoller(
+        TikTokUploadHttpClient tikTokUploadHttpClient,
+        TikTokPollingProperties tikTokPollingProperties
+    ) {
+        return new TikTokUploadStatusPoller(tikTokUploadHttpClient, tikTokPollingProperties);
     }
 }

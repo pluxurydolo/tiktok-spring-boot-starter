@@ -5,6 +5,7 @@ import com.pluxurydolo.tiktok.dto.request.PublishVideoRequest;
 import com.pluxurydolo.tiktok.dto.response.VideoInitResponse;
 import com.pluxurydolo.tiktok.dto.response.VideoUploadResponse;
 import com.pluxurydolo.tiktok.token.AbstractTokenRetriever;
+import com.pluxurydolo.tiktok.web.TikTokVideoUploader;
 import reactor.core.publisher.Mono;
 
 public class TikTokVideoPublisher {
@@ -41,8 +42,8 @@ public class TikTokVideoPublisher {
 
     private Mono<VideoUploadResponse> uploadVideo(VideoInitResponse response, PublishVideoRequest request) {
         String uploadUrl = response.data().uploadUrl();
-        String uploadToken = uploadUrl.substring(uploadUrl.indexOf("upload_token=") + "upload_token=".length());
-        return tikTokVideoUploader.upload(uploadToken, request);
+        byte[] video = request.video();
+        return tikTokVideoUploader.upload(uploadUrl, video);
     }
 
     private Mono<String> poll(String authorization, VideoUploadResponse response) {

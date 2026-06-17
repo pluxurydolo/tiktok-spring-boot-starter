@@ -16,7 +16,7 @@ public interface TikTokApiHttpClient {
         value = "/v2/oauth/token/",
         contentType = APPLICATION_FORM_URLENCODED_VALUE
     )
-    Mono<TokenResponse> getToken(
+    Mono<TokenResponse> getAccessToken(
         @RequestBody MultiValueMap<String, String> body
     );
 

@@ -1,3 +1,20 @@
 spring:
   main:
     allow-bean-definition-overriding: true
+tiktok:
+  auth:
+    client:
+      key: key
+      secret: secret
+    redirect-uri: http://localhost:8888$/app-name/v1/tiktok/login/redirect
+  endpoint:
+    login: /app-name/v1/tiktok/login
+    redirect: /app-name/v1/tiktok/login/redirect
+    refresh-token: /app-name/v1/tiktok/refresh-token
+  scheduler:
+    refresh-token:
+      cron: 0 0 0 * * SUN
+      zone: Europe/Moscow
+  polling:
+    max-repeat: 20
+    delay: 10s

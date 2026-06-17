@@ -44,9 +44,10 @@ public class TikTokAccessTokenFlow {
         body.add("grant_type", grantType);
         body.add("redirect_uri", redirectUri);
 
-        return tikTokApiHttpClient.getToken(body)
+        return tikTokApiHttpClient.getAccessToken(body)
             .flatMap(abstractTokenSaver::save)
             .flatMap(_ -> accessTokenFlowHook.doAfter())
+            .thenReturn("SUCCESS")
             .doOnSuccess(_ -> LOGGER.info("bpvh [tiktok-starter] Access token успешно получен"))
             .onErrorResume(throwable -> {
                 LOGGER.error("gvxk [tiktok-starter] Произошла ошибка при получении access token");

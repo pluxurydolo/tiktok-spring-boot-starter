@@ -62,12 +62,6 @@ public class TikTokRefreshTokenFlow {
         body.add("refresh_token", refreshToken);
 
         return tikTokApiHttpClient.refreshToken(body)
-            .doOnNext(response -> {
-                LOGGER.info("ccaa [tiktok-starter] Ответ TikTok:");
-                LOGGER.info("ccbb [tiktok-starter] access_token: {}", response.accessToken() != null ? "ЕСТЬ" : "null");
-                LOGGER.info("ccca [tiktok-starter] error: {}", response.error());
-                LOGGER.info("ccdd [tiktok-starter] error_description: {}", response.errorDescription());
-            })
             .flatMap(abstractTokenSaver::save);
     }
 }

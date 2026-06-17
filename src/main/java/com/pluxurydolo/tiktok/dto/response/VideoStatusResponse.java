@@ -12,5 +12,4 @@ public record VideoStatusResponse(
     @JsonProperty("error")
     Error error
 ) {
-    public boolean isSuccess() { return data != null && "SUCCESS".equals(data.status()); } // TODO удалить
 }
