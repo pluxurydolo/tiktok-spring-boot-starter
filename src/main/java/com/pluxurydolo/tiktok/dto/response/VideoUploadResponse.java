@@ -5,11 +5,7 @@ import com.pluxurydolo.tiktok.dto.response.data.UploadData;
 import com.pluxurydolo.tiktok.dto.response.error.Error;
 
 public record VideoUploadResponse(
-
-    @JsonProperty("data")
-    UploadData data,
-
-    @JsonProperty("error")
-    Error error
+    @JsonProperty("data") UploadData data,
+    @JsonProperty("error") Error error
 ) {
 }

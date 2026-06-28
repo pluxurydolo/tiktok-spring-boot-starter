@@ -7,11 +7,7 @@ import java.time.Duration;
 
 @ConfigurationProperties(prefix = "tiktok.polling")
 public record TikTokPollingProperties(
-
-    @Name("max-repeat")
-    int maxRepeat,
-
-    @Name("delay")
-    Duration delay
+    @Name("max-repeat") int maxRepeat,
+    @Name("delay") Duration delay
 ) {
 }
